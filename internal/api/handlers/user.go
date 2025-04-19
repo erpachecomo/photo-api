@@ -96,5 +96,13 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Deleted successfully"})
 }
 func (h *UserHandler) GetUsers(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "Not implemented"})
+	users, err := h.svc.GetUsers()
+	if err != nil {
+		fmt.Printf("Error on GetUsers: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Internal Server Error",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, users)
 }
