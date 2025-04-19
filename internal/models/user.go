@@ -9,3 +9,8 @@ type User struct {
 	Name  string        `json:"name" binding:"required"`
 	Email string        `json:"email" binding:"required"`
 }
+
+type UserUpdate struct {
+	Name  string `bson:"name,omitempty"`
+	Email string `bson:"email,omitempty"`
+}

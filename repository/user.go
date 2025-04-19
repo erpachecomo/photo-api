@@ -28,7 +28,25 @@ func (r *UserRepository) FindByID(id bson.ObjectID) (user *models.User, err erro
 	return user, nil
 }
 
+func (r *UserRepository) FindByEmail(email string) (user *models.User, err error) {
+
+	err = r.collection.FindOne(context.TODO(), bson.M{"email": email}).Decode(&user)
+
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
 func (r *UserRepository) InsertOne(user *models.User) (bson.ObjectID, error) {
+
 	result, err := r.collection.InsertOne(context.TODO(), user)
+
 	return result.InsertedID.(bson.ObjectID), err
+}
+
+func (r *UserRepository) UpdateOne(id bson.ObjectID, newValues *models.UserUpdate) (*mongo.UpdateResult, error) {
+	filter := bson.M{"_id": id}
+	update := bson.M{"$set": newValues}
+	return r.collection.UpdateOne(context.TODO(), filter, update)
 }
