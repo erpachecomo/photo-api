@@ -50,3 +50,19 @@ func (r *UserRepository) UpdateOne(id bson.ObjectID, newValues *models.UserUpdat
 	update := bson.M{"$set": newValues}
 	return r.collection.UpdateOne(context.TODO(), filter, update)
 }
+
+func (r *UserRepository) DeleteOne(id bson.ObjectID) error {
+	filter := bson.M{"_id": id}
+
+	result, err := r.collection.DeleteOne(context.TODO(), filter)
+
+	if err != nil {
+		return err
+	}
+
+	if result.DeletedCount == 0 {
+		return mongo.ErrNoDocuments
+	}
+	return nil
+
+}

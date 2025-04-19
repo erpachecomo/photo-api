@@ -3,6 +3,6 @@ package errors
 import "errors"
 
 var (
-	ErrInvalidIdFormat   = errors.New("invalid id format")
-	ErrUserAlreadyExists = errors.New("user already exists")
+	ErrInvalidIdFormat     = errors.New("invalid id format")
+	ErrEntityAlreadyExists = errors.New("entity already exists")
 )
