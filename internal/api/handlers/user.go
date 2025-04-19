@@ -45,7 +45,7 @@ func (h *UserHandler) PostUser(c *gin.Context) {
 	}
 	newUser, err := h.svc.PostUser(&user)
 
-	if errors.Is(err, appErrors.ErrUserAlreadyExists) {
+	if errors.Is(err, appErrors.ErrEntityAlreadyExists) {
 		c.JSON(http.StatusConflict, gin.H{"message": "Email already exists"})
 		return
 	}
@@ -82,7 +82,18 @@ func (h *UserHandler) PutUser(c *gin.Context) {
 	c.JSON(http.StatusOK, updatedUser)
 }
 func (h *UserHandler) DeleteUser(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "Not implemented"})
+	id := c.Param("id")
+	err := h.svc.DeleteUser(id)
+	if err != nil {
+		fmt.Printf("Delete Service Error: %v", err)
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Internal Server Error"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Deleted successfully"})
 }
 func (h *UserHandler) GetUsers(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{"message": "Not implemented"})

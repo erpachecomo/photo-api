@@ -34,7 +34,7 @@ func (s *UserService) PostUser(user *models.User) (*models.User, error) {
 	existingUser, err := s.repository.FindByEmail(user.Email)
 
 	if err == nil && existingUser != nil {
-		return nil, errors.ErrUserAlreadyExists
+		return nil, errors.ErrEntityAlreadyExists
 	}
 
 	result, err := s.repository.InsertOne(user)
@@ -67,4 +67,13 @@ func (s *UserService) PutUser(id string, user *models.UserUpdate) (*models.User,
 	}
 	return updatedUser, nil
 
+}
+
+func (s *UserService) DeleteUser(id string) error {
+	oid, err := bson.ObjectIDFromHex(id)
+	if err != nil {
+		return mongo.ErrNoDocuments
+	}
+
+	return s.repository.DeleteOne(oid)
 }
