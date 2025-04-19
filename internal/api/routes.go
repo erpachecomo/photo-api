@@ -17,6 +17,9 @@ func SetupRoutes(db *mongo.Database) {
 	router.GET("/ping", ping)
 	router.GET("/users/:id", userHandler.GetUser)
 	router.POST("/users", userHandler.PostUser)
+	router.PUT("/users/:id", userHandler.PutUser)
+	router.DELETE("/users/:id", userHandler.DeleteUser)
+	router.GET("/users", userHandler.GetUsers)
 
 	// Start the server
 	router.Run("localhost:8080")
