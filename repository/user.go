@@ -17,7 +17,18 @@ func NewUserRepository(db *mongo.Database) *UserRepository {
 		collection: db.Collection("users"),
 	}
 }
+func (r *UserRepository) GetAll() (users []*models.User, err error) {
+	result, err := r.collection.Find(context.TODO(), bson.M{})
+	if err != nil {
+		return nil, err
+	}
 
+	if err = result.All(context.TODO(), &users); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
 func (r *UserRepository) FindByID(id bson.ObjectID) (user *models.User, err error) {
 
 	err = r.collection.FindOne(context.TODO(), bson.M{"_id": id}).Decode(&user)

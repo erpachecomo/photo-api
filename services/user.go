@@ -20,6 +20,10 @@ func NewUserService(db *mongo.Database) *UserService {
 
 }
 
+func (s *UserService) GetUsers() ([]*models.User, error) {
+	return s.repository.GetAll()
+}
+
 func (s *UserService) GetUser(id string) (*models.User, error) {
 	oid, err := bson.ObjectIDFromHex(id)
 	if err != nil {
