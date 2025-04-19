@@ -1,3 +1,4 @@
+```
 ├── cmd
 │   └── [service-name]
 │       └── main.go
@@ -17,7 +18,7 @@
 │   └── config.yaml
 ├── go.mod
 ├── go.sum
-
+```
 Project structure
 
 * cmd: Contains the main application entry point.
