@@ -19,10 +19,11 @@ func NewUserRepository(db *mongo.Database) *UserRepository {
 }
 func (r *UserRepository) GetAll() (users []*models.User, err error) {
 	result, err := r.collection.Find(context.TODO(), bson.M{})
+
 	if err != nil {
 		return nil, err
 	}
-
+	defer result.Close(context.TODO())
 	if err = result.All(context.TODO(), &users); err != nil {
 		return nil, err
 	}
